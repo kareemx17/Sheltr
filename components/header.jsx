@@ -1,7 +1,7 @@
 const  Header = () => {
     return (
-        <div>
-            
+        <div className="w-screen h-16 bg-red-500">
+            Header
         </div>
     );
 }
