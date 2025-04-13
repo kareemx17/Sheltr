@@ -30,13 +30,16 @@ export default function LandingPage() {
             loaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <img 
+          {/* <img 
             src="/images/pgae.png" 
             alt="Shelter preview" 
             fill="true"
             className="object-cover"
             priority
-          />
+          /> */}
+          <img src="https://i.ibb.co/Mkc9DhnT/pgae.png" alt="pgae" fill="true"
+            className="w-full "
+             />
         </div>
 
         {/* Description text */}
