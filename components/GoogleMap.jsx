@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 const GoogleMap = () => {
   const mapRef = useRef(null);
   const [locationStatus, setLocationStatus] = useState("Waiting for map to load...");
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   
   useEffect(() => {
     // Define the callback function BEFORE adding the script tag
@@ -74,7 +75,7 @@ const GoogleMap = () => {
       // Create and add the script tag
       const script = document.createElement("script");
       script.id = "google-maps-script";
-      script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjmZpu0dFXR8GSwntodQtrcnYUxGS2hk&callback=initMap";
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);

@@ -5,7 +5,7 @@ const GoogleMap = dynamic(() => import("@/components/GoogleMap"), {
   ssr: false,
 });
 
-export default function Home() {
+export default function MapWrapper() {
   return (
     <main className="w-full h-screen">
       <GoogleMap />
