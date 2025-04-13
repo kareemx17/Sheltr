@@ -1,16 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/userStore";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({ email: "", password: "" });
+  const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.setUser);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setUser(data);
+      console.log(user);
+
+      router.push("/");
+    } else {
+      alert("Login failed");
+    }
   };
 
   return (
@@ -47,23 +64,26 @@ const Login = () => {
               whileFocus={{ scale: 1.01 }}
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="text-gray-700 font-medium block">
+            <label
+              htmlFor="password"
+              className="text-gray-700 font-medium block"
+            >
               Password
             </label>
             <motion.input
               whileFocus={{ scale: 1.01 }}
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
               required
             />
@@ -86,14 +106,14 @@ const Login = () => {
             >
               Forgot your password?
             </motion.a>
-            
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
               className="text-gray-600 text-sm"
             >
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link href="/signup" className="text-[#93AEC5] font-medium">
                 Sign up
               </Link>

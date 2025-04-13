@@ -1,3 +1,4 @@
+"use client";
 import Info from "@/components/Info";
 import ShelterMap from "@/components/ShelterMap";
 
@@ -10,9 +11,7 @@ const Shelters = () => {
           <ShelterMap />
         </div>
 
-        <div className="w-1/2 h-full">
-          {/* <Info /> */}
-        </div>
+        <div className="w-1/2 h-full">{/* <Info /> */}</div>
         {/* Right half - Hurricane Information */}
         {/* <div className="w-1/2 h-full bg-gradient-to-br from-green-500 to-blue-500 p-8 relative overflow-hidden">
           <h2 className="text-2xl font-bold mb-6 text-white">Active Hurricanes</h2>

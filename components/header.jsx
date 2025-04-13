@@ -1,9 +1,44 @@
 "use client";
 
+import { useUserStore } from "@/store/userStore";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Header = () => {
+  const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
+  const router = useRouter();
+
+  const setUser = useUserStore((state) => state.setUser);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("/api/me");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (data.user) {
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+
+    logout(); // Clear user from Zustand
+    router.push("/login"); // Redirect to login
+  };
 
   return (
     <header className="h-16 shadow-gray-100 shadow-lg">
@@ -16,10 +51,7 @@ const Header = () => {
             transition={{ duration: 0.2 }}
             whileHover={{ scale: 1.05 }}
           >
-            <a
-              href="/"
-              className="text-3xl font-bold drop-shadow-lg"
-            >
+            <a href="/" className="text-3xl font-bold drop-shadow-lg">
               <Image
                 src="/logo.png"
                 alt="Sheltr Logo"
@@ -31,32 +63,27 @@ const Header = () => {
             </a>
           </motion.div>
 
-          <div className="flex items-center space-x-4">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <a
-                href="/login"
-                className="px-4 py-2 transition-colors pointer-events-auto border-2 border-white rounded-md hover:bg-white/10"
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <h2>Welcome {user.email}!</h2>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                Login
-              </a>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <a
-                href="/signup"
-                className="px-4 py-2 bg-[#93AEC5] text-white rounded-md transition-colors font-medium"
-              >
-                Sign Up
-              </a>
-            </motion.div>
-          </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-[#93AEC5] text-white rounded-md transition-colors font-medium"
+                >
+                  Logout
+                </button>
+              </motion.div>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <h2>Loading...</h2>
+            </div>
+          )}
         </div>
       </div>
     </header>

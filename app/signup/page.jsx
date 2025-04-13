@@ -1,16 +1,23 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      body: JSON.stringify(form),
+    });
+
+    if (res.ok) router.push("/login");
+    else alert("Signup failed");
   };
 
   return (
@@ -40,6 +47,20 @@ const SignUp = () => {
           className="p-8 space-y-6"
         >
           <div className="space-y-2">
+            <label htmlFor="name" className="text-gray-700 font-medium block">
+              Name
+            </label>
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
+              type="text"
+              id="name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
+              required
+            />
+          </div>
+          <div className="space-y-2">
             <label htmlFor="email" className="text-gray-700 font-medium block">
               Email
             </label>
@@ -47,23 +68,26 @@ const SignUp = () => {
               whileFocus={{ scale: 1.01 }}
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="text-gray-700 font-medium block">
+            <label
+              htmlFor="password"
+              className="text-gray-700 font-medium block"
+            >
               Password
             </label>
             <motion.input
               whileFocus={{ scale: 1.01 }}
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
               required
             />
@@ -86,14 +110,14 @@ const SignUp = () => {
             >
               Forgot your password?
             </motion.a>
-            
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
               className="text-gray-600 text-sm"
             >
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Link href="/login" className="text-[#93AEC5] font-medium">
                 Sign in
               </Link>
