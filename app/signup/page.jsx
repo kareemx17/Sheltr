@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,21 +14,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-orange-50 to-yellow-100 flex items-center justify-center p-4">
+    <div className="w-screen h-screen bg-[#D8E3EB] flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
       >
-        <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-500 p-6">
+        <div className="bg-[#93AEC5] p-6">
           <motion.h2
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-3xl font-bold text-white text-center"
           >
-            Welcome Back
+            Sign Up
           </motion.h2>
         </div>
 
@@ -73,16 +73,16 @@ const Login = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-500 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full bg-[#93AEC5] text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            Sign In
+            Sign Up
           </motion.button>
 
           <div className="text-center space-y-4">
             <motion.a
               whileHover={{ scale: 1.05 }}
               href="#"
-              className="text-orange-600 hover:text-orange-700 text-sm block"
+              className="text-[#93AEC5] text-sm block"
             >
               Forgot your password?
             </motion.a>
@@ -93,9 +93,9 @@ const Login = () => {
               transition={{ delay: 0.5 }}
               className="text-gray-600 text-sm"
             >
-              Don't have an account?{' '}
-              <Link href="/signup" className="text-orange-600 hover:text-orange-700 font-medium">
-                Sign up
+              Already have an account?{' '}
+              <Link href="/login" className="text-[#93AEC5] font-medium">
+                Sign in
               </Link>
             </motion.div>
           </div>
@@ -105,4 +105,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
