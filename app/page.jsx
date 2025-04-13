@@ -30,10 +30,10 @@ export default function LandingPage() {
             loaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <Image 
+          <img 
             src="/images/pgae.png" 
             alt="Shelter preview" 
-            fill 
+            fill="true"
             className="object-cover"
             priority
           />
