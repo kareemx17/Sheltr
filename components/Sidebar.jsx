@@ -11,50 +11,53 @@ const Sidebar = () => {
     setSidebarExpanded((prev) => !prev);
   };
 
+  const user = {
+    name: "Abubakr Sadriddinov",
+    email: "abubakrkhon@test.com",
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.8 }}
       className={`flex flex-col items-center transition-all duration-100 h-[calc(100vh-64px)] ${
         sidebarExpanded ? " w-64" : " w-20"
       }`}
     >
-      <motion.button
+      <button
         onClick={toggleSidebar}
-        className="p-2 mt-4 mb-4 transition-colors"
-        whileHover={{ scale: 1.1, rotate: sidebarExpanded ? -180 : 0 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        className="p-2 mt-4 mb-6 flex items-center gap-x-2 hover:scale-110 transition"
       >
         <ArrowRightFromLine size={30} />
-      </motion.button>
+        {sidebarExpanded && <h2>Collapse</h2>}
+      </button>
 
-      <motion.div
-        className="mb-4"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <a href="/shelters" className="cursor-default">
-          <MapPinHouse size={30} className=""/>
+      <div className="mb-6 flex hover:scale-110 transition">
+        <a
+          href="/shelters"
+          className="cursor-default flex items-center gap-x-2"
+        >
+          <MapPinHouse size={30} className="" />
+          {sidebarExpanded && <h2>Shelters</h2>}
         </a>
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="flex-grow"
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      ></motion.div>
+      <div className="flex-grow"></div>
 
-      <motion.div
-        className="mb-4"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <ProfileCircle />
-      </motion.div>
+      <div className="mb-4 flex items-center gap-x-3">
+        <ProfileCircle user={user}/>
+        {sidebarExpanded && (
+          <div>
+            <p className="font-medium leading-5">
+              {user.name.length >= 20 ? user.name.slice(0, 18)+"..." : user.name}
+            </p>
+            <p className="text-xs text-gray-700">
+              {user.email.length >= 21 ? user.email.slice(0, 20)+"..." : user.email}
+            </p>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 };
