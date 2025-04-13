@@ -19,23 +19,8 @@ Sheltr is a web application designed to help users locate nearby shelter options
 - **Database**: MongoDB
 - **Others**: Midnight (for authentication/notifications)
 
-## Installation
-
-To get a local copy up and running, follow these steps:
-
 ### Prerequisites
 - [Node.js](https://nodejs.org/) installed
-
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/kareemx17/Sheltr.git
-2. Navigate to the project directory:
-   cd Sheltr
-3. Install dependencies:
-   npm install
-4. Start the development server:
-   npm start
 
 Usage
 Visit the site: www.thesheltr.us
