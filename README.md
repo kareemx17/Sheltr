@@ -16,8 +16,7 @@ Sheltr is a web application designed to help users locate nearby shelter options
 
 - **Frontend**: JavaScript, HTML, CSS
 - **APIs**: Gemini AI API, Google Maps API
-- **Database**: MongoDB
-- **Others**: Midnight (for authentication/notifications)
+- **Database**: MongoDB Atlas
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) installed
