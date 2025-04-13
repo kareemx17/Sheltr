@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -14,32 +14,34 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-white">
       {/* Main content container */}
-      <div className="max-w-2xl w-full text-center">
+      <div className="max-w-2xl w-full text-center flex flex-col items-center">
         {/* Title */}
         <h1 
-          className={`text-4xl md:text-6xl font-bold mb-16 transition-opacity duration-500 ${
+          className={`text-4xl md:text-6xl font-bold mb-6 transition-opacity duration-500 ${
             loaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
           Sheltr.
         </h1>
 
-        {/* Placeholder image area with diagonal lines */}
+        {/* Styled image container */}
         <div 
-          className={`w-full aspect-video mb-16 rounded-2xl bg-gray-100 transition-opacity duration-500 ${
+          className={`relative w-[900px] aspect-video mb-6 rounded-2xl overflow-hidden transition-opacity duration-500 ${
             loaded ? 'opacity-100' : 'opacity-0'
           }`}
-          // style={{
-          //   backgroundImage: 
-          // }}
-
         >
-          <Image src="/pgae.png" alt="Shelter" fill />
+          <Image 
+            src="/pgae.png" 
+            alt="Shelter preview" 
+            fill 
+            className="object-cover"
+            priority
+          />
         </div>
 
         {/* Description text */}
         <p 
-          className={`text-lg md:text-xl text-gray-500 mb-10 transition-opacity duration-500 delay-200 ${
+          className={`text-lg md:text-xl text-gray-500 mb-5 transition-opacity duration-500 delay-200 ${
             loaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
