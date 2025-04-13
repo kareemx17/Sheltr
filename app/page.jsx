@@ -31,7 +31,7 @@ export default function LandingPage() {
           }`}
         >
           <Image 
-            src="/pgae.png" 
+            src="/images/pgae.png" 
             alt="Shelter preview" 
             fill 
             className="object-cover"

@@ -93,6 +93,7 @@ const Login = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
+            onClick={handleSubmit}
             className="w-full bg-[#93AEC5] text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Sign In
