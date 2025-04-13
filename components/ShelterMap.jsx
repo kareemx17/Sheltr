@@ -1,16 +1,21 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { shelters } from "./shelterData";
+import { useShelters } from "../hooks/useShelter";
 
 const ShelterMap = () => {
   const mapRef = useRef(null);
-  const [locationStatus, setLocationStatus] = useState("Waiting for map to load...");
+  const mapInstanceRef = useRef(null);
+  const [locationStatus, setLocationStatus] = useState(
+    "Waiting for map to load..."
+  );
   const [shelterMarkers, setShelterMarkers] = useState([]);
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const shelters = useShelters();
 
   useEffect(() => {
-    window.initMap = async function () {
+    // Initialize map
+    window.initMap = function () {
       try {
         setLocationStatus("Map loaded, getting your location...");
 
@@ -20,67 +25,10 @@ const ShelterMap = () => {
           mapTypeId: "satellite",
         });
 
-        // 🏥 Add shelters to map
-        const geocodeAddress = (address) => {
-          return new Promise((resolve, reject) => {
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode({ address: address + ", Tampa, FL" }, (results, status) => {
-              if (status === "OK" && results[0]) {
-                resolve(results[0].geometry.location);
-              } else {
-                reject(new Error(`Geocode failed: ${status}`));
-              }
-            });
-          });
-        };
+        // Store map instance in ref for later use with shelters
+        mapInstanceRef.current = map;
 
-        const markers = [];
-        for (const shelter of shelters) {
-          try {
-            const location = await geocodeAddress(shelter.address);
-            const marker = new window.google.maps.Marker({
-              position: location,
-              map: map,
-              title: shelter.name,
-              icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-                scaledSize: new window.google.maps.Size(32, 32),
-              },
-            });
-
-            const infoWindow = new window.google.maps.InfoWindow({
-              content: `
-                <div style="padding: 10px; max-width: 250px;">
-                  <h3 style="margin: 0 0 5px 0;">${shelter.name}</h3>
-                  <p>${shelter.address}</p>
-                  <p style="color: ${shelter.isPetFriendly ? "green" : "red"};">
-                    ${shelter.isPetFriendly ? "Pet Friendly" : "No Pets"}
-                  </p>
-                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    shelter.address
-                  )}"
-                    target="_blank" style="background:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:4px;">
-                    Open in Google Maps
-                  </a>
-                </div>
-              `,
-            });
-
-            marker.addListener("click", () => {
-              if (activeInfoWindow) activeInfoWindow.close();
-              infoWindow.open(map, marker);
-              setActiveInfoWindow(infoWindow);
-            });
-
-            markers.push(marker);
-          } catch (error) {
-            console.error(`Error geocoding ${shelter.name}:`, error);
-          }
-        }
-
-        setShelterMarkers(markers);
-
-        // 📍 User location marker
+        // Handle user location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -89,9 +37,13 @@ const ShelterMap = () => {
                 lng: position.coords.longitude,
               };
 
-              setLocationStatus(`Found location! Accuracy: ${Math.round(position.coords.accuracy)} meters`);
+              setLocationStatus(
+                `Found location! Accuracy: ${Math.round(
+                  position.coords.accuracy
+                )} meters`
+              );
 
-              // ✅ Center map on user's location
+              // Center map on user's location
               map.setCenter(pos);
 
               new window.google.maps.Marker({
@@ -130,6 +82,7 @@ const ShelterMap = () => {
       }
     };
 
+    // Load Google Maps script if not already loaded
     if (!document.getElementById("google-maps-script")) {
       const script = document.createElement("script");
       script.id = "google-maps-script";
@@ -144,7 +97,74 @@ const ShelterMap = () => {
     return () => {
       delete window.initMap;
     };
-  }, []);
+  }, [apiKey]);
+
+  // Handle adding shelter markers in a separate useEffect
+  useEffect(() => {
+    // Only process shelters when map is loaded and shelters data is available
+    if (mapInstanceRef.current && shelters && shelters.length > 0) {
+      const geocoder = new window.google.maps.Geocoder();
+      const map = mapInstanceRef.current;
+      const markers = [];
+      let activeInfoWindow = null;
+
+      // Process each shelter
+      shelters.forEach((shelter) => {
+        // Use address with city and state for better geocoding results
+        const fullAddress = `${shelter.address}, Tampa, FL`;
+
+        geocoder.geocode({ address: fullAddress }, (results, status) => {
+          if (status === "OK" && results[0]) {
+            const location = results[0].geometry.location;
+
+            const marker = new window.google.maps.Marker({
+              position: location,
+              map: map,
+              title: shelter.name,
+              icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                scaledSize: new window.google.maps.Size(32, 32),
+              },
+            });
+
+            const infoWindow = new window.google.maps.InfoWindow({
+              content: `
+                <div style="padding: 10px; max-width: 250px;">
+                  <h3 style="margin: 0 0 5px 0;">${shelter.name}</h3>
+                  <p style="margin-bottom: 5px;">${shelter.address}</p>
+                  <p style="margin-bottom: 12px; color: ${
+                    shelter.isPetFriendly ? "green" : "red"
+                  };">
+                    ${shelter.isPetFriendly ? "Pet Friendly" : "No Pets"}
+                  </p>
+                  <div style="margin-top: 8px;">
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      shelter.address
+                    )}"
+                      target="_blank" style="background:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:4px;display:inline-block;">
+                      Open in Google Maps
+                    </a>
+                  </div>
+                </div>
+              `,
+            });
+
+            marker.addListener("click", () => {
+              if (activeInfoWindow) activeInfoWindow.close();
+              infoWindow.open(map, marker);
+              activeInfoWindow = infoWindow;
+            });
+
+            markers.push(marker);
+          } else {
+            console.error(`Geocoding failed for ${shelter.name}: ${status}`);
+          }
+        });
+      });
+
+      setShelterMarkers(markers);
+    }
+  }, [shelters]);
 
   return (
     <div className="relative w-[95%] h-[95%] pt-10 pl-10 rounded-full">
