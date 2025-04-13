@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ArrowRightFromLine } from "lucide-react";
 import ProfileCircle from "./ProfileCircle";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -11,21 +12,40 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col items-center transition-all duration-300 h-[calc(100vh-64px)] bg-amber-300 ${
-        sidebarExpanded ? "w-64" : "w-20"
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`flex flex-col items-center transition-all duration-300 h-[calc(100vh-64px)] bg-gradient-to-b from-yellow-500 via-orange-500 to-yellow-500 shadow-lg${
+        sidebarExpanded ? " w-64" : " w-20"
       }`}
     >
-      <button onClick={toggleSidebar} className="p-2 mt-4">
+      <motion.button 
+        onClick={toggleSidebar} 
+        className="p-2 mt-4 text-white hover:text-yellow-200 transition-colors"
+        whileHover={{ scale: 1.1, rotate: sidebarExpanded ? -180 : 0 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
         <ArrowRightFromLine size={30} />
-      </button>
+      </motion.button>
 
-      <div className="flex-grow"></div>
+      <motion.div 
+        className="flex-grow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+      </motion.div>
 
-      <div className="mb-4">
+      <motion.div 
+        className="mb-4"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
         <ProfileCircle />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
