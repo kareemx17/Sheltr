@@ -90,7 +90,7 @@ const GoogleMap = () => {
   }, []);
   
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-[500px] h-[500px]">
       <div ref={mapRef} className="w-full h-full"></div>
       <div className="absolute top-4 left-4 bg-white p-2 rounded shadow z-10">
         {locationStatus}
