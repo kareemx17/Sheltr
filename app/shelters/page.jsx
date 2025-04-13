@@ -11,7 +11,7 @@ const Shelters = () => {
         </div>
 
         <div className="w-1/2 h-full">
-          <Info />
+          {/* <Info /> */}
         </div>
         {/* Right half - Hurricane Information */}
         {/* <div className="w-1/2 h-full bg-gradient-to-br from-green-500 to-blue-500 p-8 relative overflow-hidden">
