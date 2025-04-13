@@ -1,4 +1,3 @@
-import Image from "next/image";
 import GoogleMap from "@/components/GoogleMap";
 import Info from "@/components/Info";
 import Header from "@/components/Header";

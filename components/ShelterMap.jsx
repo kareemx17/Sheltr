@@ -15,8 +15,8 @@ const ShelterMap = () => {
         setLocationStatus("Map loaded, getting your location...");
 
         const map = new window.google.maps.Map(mapRef.current, {
-          center: { lat: 27.9506, lng: -82.4572 }, // Tampa center
-          zoom: 7,
+          center: { lat: 27.9506, lng: -82.4572 }, // default Tampa center
+          zoom: 12,
           mapTypeId: "satellite",
         });
 
@@ -90,6 +90,9 @@ const ShelterMap = () => {
               };
 
               setLocationStatus(`Found location! Accuracy: ${Math.round(position.coords.accuracy)} meters`);
+
+              // ✅ Center map on user's location
+              map.setCenter(pos);
 
               new window.google.maps.Marker({
                 position: pos,
