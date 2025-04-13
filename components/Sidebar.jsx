@@ -1,19 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRightFromLine, MapPinHouse } from "lucide-react";
 import ProfileCircle from "./ProfileCircle";
 import { motion } from "framer-motion";
+import { useUserStore } from "@/store/userStore";
 
 const Sidebar = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const user = useUserStore((state) => state.user);
 
   const toggleSidebar = () => {
     setSidebarExpanded((prev) => !prev);
-  };
-
-  const user = {
-    name: "Abubakr Sadriddinov",
-    email: "abubakrkhon@test.com",
   };
 
   return (
@@ -46,14 +43,18 @@ const Sidebar = () => {
       <div className="flex-grow"></div>
 
       <div className="mb-4 flex items-center gap-x-3">
-        <ProfileCircle user={user}/>
+        <ProfileCircle user={user ? user : { name: "User", email: "Email" }} />
         {sidebarExpanded && (
           <div>
             <p className="font-medium leading-5">
-              {user.name.length >= 20 ? user.name.slice(0, 18)+"..." : user.name}
+              {user.name.length >= 20
+                ? user.name.slice(0, 18) + "..."
+                : user.name}
             </p>
             <p className="text-xs text-gray-700">
-              {user.email.length >= 21 ? user.email.slice(0, 20)+"..." : user.email}
+              {user.email.length >= 21
+                ? user.email.slice(0, 20) + "..."
+                : user.email}
             </p>
           </div>
         )}

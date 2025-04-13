@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { shelters } from "./shelterData";
 import { pathPoints } from "./PathPoints";
 
 const GoogleMap = () => {
@@ -8,7 +7,6 @@ const GoogleMap = () => {
   const [locationStatus, setLocationStatus] = useState(
     "Waiting for map to load..."
   );
-  const [shelterMarkers, setShelterMarkers] = useState([]);
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const geoJsonUrl =

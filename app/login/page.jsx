@@ -24,7 +24,7 @@ const Login = () => {
       setUser(data);
       console.log(user);
 
-      router.push("/");
+      router.push("/dashboard");
     } else {
       alert("Login failed");
     }

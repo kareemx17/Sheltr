@@ -51,7 +51,7 @@ const Header = () => {
             transition={{ duration: 0.2 }}
             whileHover={{ scale: 1.05 }}
           >
-            <a href="/" className="text-3xl font-bold drop-shadow-lg">
+            <a href="/dashboard" className="text-3xl font-bold drop-shadow-lg">
               <Image
                 src="/logo.png"
                 alt="Sheltr Logo"
@@ -65,19 +65,7 @@ const Header = () => {
 
           {user ? (
             <div className="flex items-center space-x-4">
-              <h2>Welcome {user.email}!</h2>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 bg-[#93AEC5] text-white rounded-md transition-colors font-medium"
-                >
-                  Logout
-                </button>
-              </motion.div>
+              <h2>Welcome {user.name}!</h2>
             </div>
           ) : (
             <div className="flex items-center space-x-4">

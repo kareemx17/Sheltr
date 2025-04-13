@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import LayoutShell from "@/components/LayoutShell";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
       >
         <LayoutShell>
           {children}
+          <Toaster />
         </LayoutShell>
       </body>
     </html>

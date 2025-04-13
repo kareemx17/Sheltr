@@ -6,7 +6,7 @@ import Sidebar from "@/components/Sidebar";
 
 export default function LayoutShell({ children }) {
   const pathname = usePathname();
-  const hideLayout = ["/login", "/signup"].includes(pathname);
+  const hideLayout = ["/login", "/signup", "/"].includes(pathname);
 
   return (
     <>
